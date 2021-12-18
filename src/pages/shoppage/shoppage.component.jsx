@@ -16,9 +16,8 @@ class ShopPage extends Component {
 
     render() {
         return (<div className='shop-page'><h1>SHOP PAGE</h1>
-            {this.state.collection.map(x => (<div>
-                <PreviewCollection title={x.title} items={x.items} key={x.id}/>
-            </div>))}
+            {this.state.collection.map(x => (
+                <PreviewCollection key={x.id} title={x.title} items={x.items}/>))}
         </div>)
     }
 }
