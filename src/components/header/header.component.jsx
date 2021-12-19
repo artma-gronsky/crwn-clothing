@@ -13,6 +13,7 @@ class Header extends React.Component {
             <div className='options'>
                 <NavLink className='option' to='/shop'>SHOP</NavLink>
                 <NavLink className='option' to='/contact'>CONTACT</NavLink>
+                <NavLink className='option' to='/sign'>SIGN UP</NavLink>
             </div>
         </div>)
     }
