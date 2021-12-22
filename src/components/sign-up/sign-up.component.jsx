@@ -3,6 +3,7 @@ import React from "react";
 import './sign-up.styles.scss';
 import {FormInput} from "../form-input/form-input.component";
 import {CustomButton} from "../custom-button/custom-button.component";
+import {auth, createUserProfileDocument} from "../../firebase/firebase.utils";
 
 
 class SignUp extends React.Component {
@@ -23,15 +24,47 @@ class SignUp extends React.Component {
         this.setState(prev => ({...prev, [name]: value}));
     }
 
-    handleSubmit(event) {
+    register() {
+        this.props.navigate({pathname: '/'});
+        //
+    }
+
+    async handleSubmit(event) {
         event.preventDefault();
 
-        this.setState({
-            displayName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        });
+        const {displayName, email, password, confirmPassword} = this.state;
+
+        if (password !== confirmPassword) {
+            alert("Passwords don't match!");
+            return;
+        }
+
+        this.register(event);
+
+        try {
+            const {user} = await auth.createUserWithEmailAndPassword(email, password)
+                .then(response => {
+                    if (response) {
+                        console.log(response);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+
+            await createUserProfileDocument(user, {displayName});
+
+            this.setState({
+                displayName: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            });
+            
+            this.props.navigate({pathname: '/'});
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
 
@@ -39,9 +72,9 @@ class SignUp extends React.Component {
         return (<div className='sign-up'>
             <h2 className='title'>I don't have an account</h2>
             <span>Sign up with your email and password</span>
-            <form onSubmit={this.handleSubmit}>
+            <form className='sign-up-form  ' onSubmit={this.handleSubmit.bind(this)}>
                 <FormInput name='displayName' type='text' value={this.state.displayName} required
-                           onChange={this.handleChange.bind(this)} label="Email"/>
+                           onChange={this.handleChange.bind(this)} label="Display Name"/>
                 <FormInput name='email' type='email' value={this.state.email} required
                            onChange={this.handleChange.bind(this)} label="Email"/>
                 <FormInput name='password' type='password' value={this.state.password} required
