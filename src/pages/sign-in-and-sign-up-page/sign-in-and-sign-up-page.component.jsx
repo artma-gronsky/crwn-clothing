@@ -9,7 +9,7 @@ const SignInAndSignUpPage = (prop) => {
     return (
 
         <div className='sing-in-and-sign-up'>
-            <div className='sign-in-container'><SignIn/></div>
+            <div className='sign-in-container'><SignIn navigate={navigate}/></div>
             <div className='sign-up-container'><SignUp navigate={navigate}/></div>
         </div>
     )
