@@ -4,6 +4,8 @@ import './header.styles.scss';
 import {NavLink,} from "react-router-dom";
 import {ReactComponent as Logo} from "../../assets/images/084 crown.svg";
 import {auth} from "../../firebase/firebase.utils";
+import {connect} from "react-redux";
+import {mapStateToProps} from "../../redux/user/user.maps";
 
 class Header extends React.Component {
     render() {
@@ -25,4 +27,4 @@ class Header extends React.Component {
 }
 
 
-export default Header;
+export default connect(mapStateToProps)(Header);
