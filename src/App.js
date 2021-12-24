@@ -8,20 +8,25 @@ import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up-page/sign-in-and-sign-up-page.component";
 import {auth, createUserProfileDocument} from "./firebase/firebase.utils";
 import {connect} from "react-redux";
-import {mapDispatchToProps, mapStateToProps} from "./redux/user/user.maps";
+import {mapStateToProps} from "./redux/user/user.maps";
+import PreLoader from "./components/pre-loader/pre-loader.component";
+import {setIsLoading} from "./redux/common/common.actions";
+import {setCurrentUser} from "./redux/user/user.actions";
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
 
 
     componentDidMount() {
-        const {setCurrentUser} = this.props;
+        const {setCurrentUser, setLoading} = this.props;
 
+        setLoading(true);
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
             if (userAuth) {
                 const userRef = await createUserProfileDocument(userAuth?.multiFactor?.user);
                 userRef.onSnapshot(snapshot => {
                     setCurrentUser(snapshot.data())
+                    setLoading(false)
                 });
             }
 
@@ -38,6 +43,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
+                <PreLoader/>
                 <Header/>
                 <Routes>
                     <Route exact={true} path='/' element={(<HomePage/>)}/>
@@ -53,5 +59,10 @@ class App extends React.Component {
         );
     }
 }
+
+export const mapDispatchToProps = (dispatch) => ({
+    setLoading: val => dispatch(setIsLoading(val)),
+    setCurrentUser: user => dispatch(setCurrentUser(user))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
