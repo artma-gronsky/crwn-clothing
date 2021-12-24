@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 import {HomePage} from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shoppage/shoppage.component";
@@ -8,7 +8,7 @@ import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up-page/sign-in-and-sign-up-page.component";
 import {auth, createUserProfileDocument} from "./firebase/firebase.utils";
 import {connect} from "react-redux";
-import {mapDispatchToProps} from "./redux/user/user.maps";
+import {mapDispatchToProps, mapStateToProps} from "./redux/user/user.maps";
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
@@ -43,7 +43,8 @@ class App extends React.Component {
                     <Route exact={true} path='/' element={(<HomePage/>)}/>
                     <Route exact path='/shop' element={(<ShopPage/>)}/>
 
-                    <Route path='/sign' element={(<SignInAndSignUpPage/>)}/>
+                    <Route path='/sign'
+                           element={this.props.currentUser ? (<Navigate to="/"/>) : (<SignInAndSignUpPage/>)}/>
 
 
                     <Route path='*' element={(<h1>404 Wrong page address! </h1>)}/>
@@ -53,4 +54,4 @@ class App extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
