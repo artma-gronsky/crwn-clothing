@@ -1,6 +1,6 @@
-import CommonTypes from "./common.types";
+import CommonActionsTypes from "./commonActionsTypes";
 
 export const setIsLoading = (isLoading) => ({
-    type: CommonTypes.SET_IS_LOADING,
+    type: CommonActionsTypes.SET_IS_LOADING,
     payload: isLoading
 })

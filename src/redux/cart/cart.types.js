@@ -1,0 +1,3 @@
+export const CartActionTypes = {
+    TRIGGER_CART_VISIBILITY: 'CART_ACTION_TYPES_TRIGGER_CART_VISIBILITY',
+}
