@@ -8,9 +8,13 @@ export class CartIcon extends React.Component {
     render() {
         return (<div className='cart-icon' onClick={() => this.props.triggerVisibility()}>
             <Icon className='shopping-icon'/>
-            <span className='item-count'>0</span>
+            <span className='item-count'>{this.props.quantity}</span>
         </div>);
     }
 }
 
-export default connect(null, mapDispatchToProps)(CartIcon);
+export default connect((state) => {
+    return {
+        quantity: state.cart.cartItems.length
+    }
+}, mapDispatchToProps)(CartIcon);
