@@ -24,11 +24,6 @@ class SignUp extends React.Component {
         this.setState(prev => ({...prev, [name]: value}));
     }
 
-    register() {
-        this.props.navigate({pathname: '/'});
-        //
-    }
-
     async handleSubmit(event) {
         event.preventDefault();
 
@@ -38,9 +33,7 @@ class SignUp extends React.Component {
             alert("Passwords don't match!");
             return;
         }
-
-        this.register(event);
-
+        
         try {
             const {user} = await auth.createUserWithEmailAndPassword(email, password)
                 .then(response => {
@@ -60,8 +53,6 @@ class SignUp extends React.Component {
                 password: '',
                 confirmPassword: ''
             });
-            
-            this.props.navigate({pathname: '/'});
         } catch (error) {
             console.log(error.message);
         }

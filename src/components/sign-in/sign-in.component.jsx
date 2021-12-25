@@ -27,8 +27,6 @@ class SignIn extends React.Component {
                 return {...prevState, email: '', password: ''}
             })
 
-            this.props.navigate({pathname: "/"});
-
         } catch (err) {
             console.log(err.message)
         }
