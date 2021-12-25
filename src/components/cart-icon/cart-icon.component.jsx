@@ -3,6 +3,7 @@ import React from 'react'
 import {ReactComponent as Icon} from "../../assets/images/122 shopping-bag.svg";
 import {mapDispatchToProps} from "../../redux/cart/cart.maps";
 import {connect} from "react-redux";
+import {selectCartItemsCount} from "../../redux/cart/cart.selectors";
 
 export class CartIcon extends React.Component {
     render() {
@@ -15,6 +16,6 @@ export class CartIcon extends React.Component {
 
 export default connect((state) => {
     return {
-        quantity: state.cart.cartItems.length
+        quantity: selectCartItemsCount(state)
     }
 }, mapDispatchToProps)(CartIcon);
