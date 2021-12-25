@@ -4,6 +4,8 @@ import './sign-in.styles.scss';
 import {FormInput} from "../form-input/form-input.component";
 import {CustomButton} from "../custom-button/custom-button.component";
 import {auth, singInWithGoogle} from "../../firebase/firebase.utils";
+import {connect} from "react-redux";
+import {mapDispatchToProps} from "../../redux/common/common.maps";
 
 
 class SignIn extends React.Component {
@@ -51,7 +53,9 @@ class SignIn extends React.Component {
                     <CustomButton type='submit'>Sign In</CustomButton>
                     <CustomButton isGoogleSignIn onClick={(event) => {
                         event.preventDefault();
-                        return singInWithGoogle(event);
+                        this.props.setLoading(true);
+                        return singInWithGoogle(event)
+                            .catch(() => this.props.setLoading(false))
                     }}>{' '}
                         Sign In With Google
                         {' '}</CustomButton>
@@ -61,4 +65,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);

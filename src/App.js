@@ -26,12 +26,17 @@ class App extends React.Component {
                 const userRef = await createUserProfileDocument(userAuth?.multiFactor?.user);
                 userRef.onSnapshot(snapshot => {
                     setCurrentUser(snapshot.data())
+                    setLoading(false)
                 });
+            } else {
+                setCurrentUser(null);
+                setLoading(false);
             }
 
-            setLoading(false)
-            setCurrentUser(null);
+
         });
+
+
     }
 
     componentWillUnmount() {

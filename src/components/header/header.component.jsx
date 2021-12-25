@@ -8,8 +8,19 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../redux/user/user.maps";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import {mapDispatchToProps} from "../../redux/common/common.maps";
 
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.props.setLoading(true);
+    }
+
+    componentDidMount() {
+        this.props.setLoading(false);
+    }
+
     render() {
         return (<div className='header'>
             <NavLink className='logo-container' to='/'>
@@ -30,5 +41,4 @@ class Header extends React.Component {
     }
 }
 
-
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
