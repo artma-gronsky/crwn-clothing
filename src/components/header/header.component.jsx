@@ -5,10 +5,11 @@ import {NavLink,} from "react-router-dom";
 import {ReactComponent as Logo} from "../../assets/images/084 crown.svg";
 import {auth} from "../../firebase/firebase.utils";
 import {connect} from "react-redux";
-import {mapStateToProps} from "../../redux/user/user.maps";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import {mapDispatchToProps} from "../../redux/common/common.maps";
+import {createStructuredSelector} from "reselect";
+import {selectCurrentUser} from "../../redux/user/user.selectors";
 
 class Header extends React.Component {
     constructor(props) {
@@ -41,4 +42,6 @@ class Header extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(createStructuredSelector({
+    currentUser: selectCurrentUser
+}), mapDispatchToProps)(Header);

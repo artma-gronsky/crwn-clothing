@@ -6,6 +6,10 @@ export const triggerCartVisibility = () => ({
     payload: null
 })
 
+export const hideCart = () => ({
+    type: CartActionTypes.HIDE_CART
+});
+
 export const addItemToCart = (cartItem) => ({
     type: CartActionTypes.ADD_ITEM,
     payload: cartItem

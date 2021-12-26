@@ -13,6 +13,12 @@ export default function cartReducer(state = INITIAL_STATE, action) {
                 ...state,
                 isHidden: !state.isHidden
             }
+
+        case CartActionTypes.HIDE_CART:
+            return {
+                ...state,
+                isHidden: true
+            }
         case CartActionTypes.ADD_ITEM: {
             return {
                 ...state,
