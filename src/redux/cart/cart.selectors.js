@@ -6,3 +6,4 @@ export const selectIsCartHidden = createSelector([selectCart], (cart) => cart.is
 export const selectCartItems = createSelector([selectCart], (cart) => cart.cartItems);
 export const selectCartItemsCount = createSelector([selectCartItems], (cartItems) => cartItems.reduce((totalItemCount, item) => item.count + totalItemCount, 0))
 export const selectIsCartEmpty = createSelector([selectCartItems], cartItems => !cartItems || !cartItems.length)
+export const selectCartTotal = createSelector([selectCartItems], cartItems => cartItems.reduce((total, item) => total + item.count * item.price, 0))
