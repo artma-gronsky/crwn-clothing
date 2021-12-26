@@ -14,7 +14,8 @@ const CartDropdown = ({cartItems, isHidden}) => {
         <div className='cart-dropdown'>
             <div className='cart-items'>
                 {cartItems && cartItems.length ?
-                    cartItems.map(item => (<CartItem key={item.id} {...item} />)) : (
+                    cartItems.map(item => (
+                        <CartItem key={item.id} {...item}/>)) : (
                         <span className='empty-message'>Your cart is empty</span>)}
             </div>
             <CustomButton onClick={() => navigate({pathname: '/checkout'})}>GO TO CHECKOUT </CustomButton>

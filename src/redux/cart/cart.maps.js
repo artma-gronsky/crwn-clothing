@@ -1,4 +1,4 @@
-import {triggerCartVisibility} from "./cart.actions";
+import {removeItemFromCart, triggerCartVisibility} from "./cart.actions";
 import {selectCartItems, selectIsCartHidden} from "./cart.selectors";
 import {createStructuredSelector} from "reselect";
 
@@ -9,6 +9,7 @@ export const mapStateToProps = createStructuredSelector({
 
 export const mapDispatchToProps = (dispatch) => (
     {
-        triggerVisibility: () => dispatch(triggerCartVisibility())
+        triggerVisibility: () => dispatch(triggerCartVisibility()),
+        removeItemFromCart: (id) => dispatch(removeItemFromCart(id))
     }
 );

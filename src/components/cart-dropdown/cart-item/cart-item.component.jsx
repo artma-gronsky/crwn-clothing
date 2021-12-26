@@ -1,7 +1,7 @@
 import './cart-item.component.scss';
 
 
-export const CartItem = ({imageUrl, name, price, count, id}) => {
+export const CartItem = ({imageUrl, name, price, count, id, remove}) => {
     return (
         <div className='cart-item'>
             <img src={imageUrl} alt='item'/>
