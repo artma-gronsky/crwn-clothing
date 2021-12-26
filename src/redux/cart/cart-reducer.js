@@ -31,6 +31,29 @@ export default function cartReducer(state = INITIAL_STATE, action) {
                 cartItems: state.cartItems.filter(item => item.id != action.payload)
             }
         }
+        case CartActionTypes.INCREASE_ITEM_QUANTITY: {
+            debugger;
+            return {
+                ...state,
+                cartItems: state.cartItems.map(item => {
+                    if (item.id === action.payload) {
+                        return {...item, count: item.count + 1}
+                    }
+                    return item;
+                })
+            }
+        }
+        case CartActionTypes.DECREASE_ITEM_QUANTITY: {
+            return {
+                ...state,
+                cartItems: state.cartItems.map(item => {
+                    if (item.id === action.payload && item.count !== 1) {
+                        return {...item, count: item.count - 1}
+                    }
+                    return item;
+                })
+            }
+        }
         default:
             return state;
     }
