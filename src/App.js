@@ -35,11 +35,7 @@ class App extends React.Component {
                 setCurrentUser(null);
                 setLoading(false);
             }
-
-
         });
-
-
     }
 
     componentWillUnmount() {
@@ -58,8 +54,7 @@ class App extends React.Component {
                     <Route exact path='/shop' element={(<ShopPage/>)}/>
                     <Route path='/sign'
                            element={this.props.currentUser ? (<Navigate to="/"/>) : (<SignInAndSignUpPage/>)}/>
-                    <Route path='/checkout'
-                           element={<CheckoutPage/>}></Route>
+                    <Route path='/checkout' element={<CheckoutPage/>}/>
 
                     <Route path='*' element={(<h1>404 Wrong page address! </h1>)}/>
                 </Routes>
