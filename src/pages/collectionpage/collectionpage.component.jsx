@@ -3,16 +3,18 @@ import './collectionpage.styles.scss';
 import {useSearchParams} from "react-router-dom";
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
-import {selectShopCollections} from "../../redux/shop/shop.selectors";
+import {selectShopSelectedCollectionItems, selectShopSelectedCollectionTitle} from "../../redux/shop/shop.selectors";
 import CollectionItem from "../../components/collection-item/collection-item.component";
+import {selectShopCategory} from "../../redux/shop/shop.actions";
 
-const CollectionPage = ({collections}) => {
+const CollectionPage = ({collectionItems, title, dispatch}) => {
     const [searchParams] = useSearchParams();
     const name = searchParams.get("name");
 
-    //todo: COLLECTION_ID_MAP - use shop.selectors for get collection items
-    const {title, items} =
-        collections[name];
+    if (!title && name) {
+        dispatch(selectShopCategory(name));
+    }
+
 
     return (<div className='collection-page'>
         <h1 className='title'>
@@ -20,7 +22,7 @@ const CollectionPage = ({collections}) => {
         </h1>
         <div className='items'>
             {
-                items.map(item =>
+                collectionItems.map(item =>
                     (<CollectionItem key={item.id} {...item}/>)
                 )
             }
@@ -29,7 +31,8 @@ const CollectionPage = ({collections}) => {
 }
 
 export default connect(createStructuredSelector({
-    collections: selectShopCollections
+    collectionItems: selectShopSelectedCollectionItems,
+    title: selectShopSelectedCollectionTitle
 }))(CollectionPage);
 
 
