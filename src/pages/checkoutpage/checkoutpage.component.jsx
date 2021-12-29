@@ -6,6 +6,7 @@ import {decreaseItemQuantity, hideCart, increaseItemQuantity, removeItemFromCart
 import {createStructuredSelector} from "reselect";
 import {selectCartItems, selectCartTotal} from "../../redux/cart/cart.selectors";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
+import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
 
 class CheckoutPage extends React.Component {
     componentDidMount() {
@@ -37,7 +38,14 @@ class CheckoutPage extends React.Component {
                                       decreaseQuantityFn={decreaseQuantityFn} key={item.id} cartItem={item}/>);
             })}
             <div className='total'><span>TOTAL: ${total}</span></div>
-        </div>);
+            <div className='test-warning'>
+                *Please use the following test credit card for payments*
+                <br/>
+                4242 4242 4242 4242 - Exp: 01/24 - CVV: 123
+            </div>
+            <StripeCheckoutButton price={total}/>
+        </div>)
+
     }
 }
 
