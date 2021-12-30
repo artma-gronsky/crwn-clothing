@@ -1,7 +1,4 @@
 import React from 'react';
-
-import './header.styles.scss';
-import {NavLink,} from "react-router-dom";
 import {ReactComponent as Logo} from "../../assets/images/084 crown.svg";
 import {auth} from "../../firebase/firebase.utils";
 import {connect} from "react-redux";
@@ -10,6 +7,7 @@ import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import {mapDispatchToProps} from "../../redux/common/common.maps";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "../../redux/user/user.selectors";
+import {HeaderContainer, LogoContainer, OptionDiv, OptionLink, OptionsContainer} from "./header.styles";
 
 class Header extends React.Component {
     constructor(props) {
@@ -23,22 +21,24 @@ class Header extends React.Component {
     }
 
     render() {
-        return (<div className='header'>
-            <NavLink className='logo-container' to='/'>
-                <Logo className='logo'/>
-            </NavLink>
-            <div className='options'>
-                <NavLink className='option' to='/shop'>SHOP</NavLink>
-                <NavLink className='option' to='/contact'>CONTACT</NavLink>
+        return (
+            <HeaderContainer>
+                <LogoContainer to='/'>
+                    <Logo/>
+                </LogoContainer>
+                <OptionsContainer>
+                    <OptionLink to='/shop'>SHOP</OptionLink>
+                    <OptionLink to='/contact'>CONTACT</OptionLink>
 
-                {!this.props.currentUser ?
-                    (<NavLink className='option' to='/sign'>SIGN UP</NavLink>) :
-                    (<span onClick={() => auth.signOut()} className='option'>SIGN OUT</span>)
-                }
-                <CartIcon/>
-            </div>
-            <CartDropdown/>
-        </div>)
+                    {!this.props.currentUser ?
+                        (<OptionLink to='/sign'>SIGN UP</OptionLink>) :
+                        (<OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>)
+                    }
+                    <CartIcon/>
+                </OptionsContainer>
+                <CartDropdown/>
+            </HeaderContainer>
+        )
     }
 }
 
