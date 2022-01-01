@@ -1,5 +1,5 @@
 const CommonActionsTypes = {
-    SET_IS_LOADING: "COMMON_SET_IS_LOADING"
+    SET_GLOBAL_LOADING: "COMMON_SET_SET_GLOBAL_LOADING"
 }
 
 export default CommonActionsTypes;

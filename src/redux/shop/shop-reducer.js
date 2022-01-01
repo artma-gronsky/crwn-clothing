@@ -1,9 +1,9 @@
-import SHOP_DATA from "../../pages/shoppage/shoppage.data";
 import {ShopActionTypes} from "./shop.types";
 
 const INITIAL_STATE = {
-    collections: SHOP_DATA,
-    selectedCategory: ""
+    collections: null,
+    selectedCategory: "",
+    isLoading: false
 }
 
 function shopReducer(state = INITIAL_STATE, action) {
@@ -14,6 +14,20 @@ function shopReducer(state = INITIAL_STATE, action) {
                 selectedCategory: action.payload
             }
         }
+
+        case ShopActionTypes.SET_DATA: {
+            return {
+                ...state,
+                collections: action.payload
+            }
+        }
+        case ShopActionTypes.SET_LOADING: {
+            return {
+                ...state,
+                isLoading: action.payload
+            }
+        }
+
         default:
             return state;
     }

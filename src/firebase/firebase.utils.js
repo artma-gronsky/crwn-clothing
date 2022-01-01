@@ -13,10 +13,7 @@ const firebaseConfig = {
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-    if (!userAuth) {
-        return;
-    }
-
+    if (!userAuth) return;
     const userRef = firestore.doc(`users/${userAuth.uid}`);
 
     const snapShot = await userRef.get();
@@ -37,6 +34,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     return userRef;
 }
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd, force = false) => {
+    const collectionRef = firestore.collection(collectionKey);
+
+    const collectionSnapShot = await collectionRef.get();
+    if (collectionSnapShot.empty || force) {
+        const batch = firestore.batch();
+        objectsToAdd.forEach(obj => {
+            const newDocRef = collectionRef.doc();
+            batch.set(newDocRef, obj);
+        });
+
+        return await batch.commit();
+    }
+
+};
+
 
 firebase.initializeApp(firebaseConfig);
 

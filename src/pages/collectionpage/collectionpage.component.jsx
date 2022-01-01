@@ -9,7 +9,7 @@ import {selectShopCategory} from "../../redux/shop/shop.actions";
 
 const CollectionPage = ({collectionItems, title, dispatch}) => {
     const {name} = useParams();
-    dispatch(selectShopCategory(name));
+    dispatch(selectShopCategory(name.toLowerCase()));
 
 
     if (collectionItems && collectionItems.length) {

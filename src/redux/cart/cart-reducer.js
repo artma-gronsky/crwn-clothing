@@ -28,11 +28,10 @@ export default function cartReducer(state = INITIAL_STATE, action) {
         case CartActionTypes.REMOVE_ITEM: {
             return {
                 ...state,
-                cartItems: state.cartItems.filter(item => item.id != action.payload)
+                cartItems: state.cartItems.filter(item => item.id !== action.payload)
             }
         }
         case CartActionTypes.INCREASE_ITEM_QUANTITY: {
-            debugger;
             return {
                 ...state,
                 cartItems: state.cartItems.map(item => {

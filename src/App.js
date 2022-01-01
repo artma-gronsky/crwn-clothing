@@ -9,7 +9,7 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up-page/sign-in-and-si
 import {auth, createUserProfileDocument} from "./firebase/firebase.utils";
 import {connect} from "react-redux";
 import PreLoader from "./components/pre-loader/pre-loader.component";
-import {setIsLoading} from "./redux/common/common.actions";
+import {setGlobalLoading} from "./redux/common/common.actions";
 import {setCurrentUser} from "./redux/user/user.actions";
 import CheckoutPage from "./pages/checkoutpage/checkoutpage.component";
 import {createStructuredSelector} from "reselect";
@@ -20,7 +20,7 @@ class App extends React.Component {
     unsubscribeFromAuth = null;
 
 
-    componentDidMount() {
+    async componentDidMount() {
         const {setCurrentUser, setLoading} = this.props;
 
         setLoading(true);
@@ -64,7 +64,7 @@ class App extends React.Component {
 }
 
 export const mapDispatchToProps = (dispatch) => ({
-    setLoading: val => dispatch(setIsLoading(val)),
+    setLoading: val => dispatch(setGlobalLoading(val)),
     setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 

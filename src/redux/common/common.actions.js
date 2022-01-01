@@ -1,6 +1,6 @@
 import CommonActionsTypes from "./commonActionsTypes";
 
-export const setIsLoading = (isLoading) => ({
-    type: CommonActionsTypes.SET_IS_LOADING,
+export const setGlobalLoading = (isLoading) => ({
+    type: CommonActionsTypes.SET_GLOBAL_LOADING,
     payload: isLoading
 })

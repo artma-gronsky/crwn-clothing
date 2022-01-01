@@ -1,10 +1,10 @@
-import {setIsLoading} from "./common.actions";
-import {selectIsLoading} from "./common.selectors";
+import {setGlobalLoading} from "./common.actions";
+import {selectGlobalLoading} from "./common.selectors";
 
 export const mapStateToProps = (state) => ({
-    isLoading: selectIsLoading(state)
+    isLoading: selectGlobalLoading(state)
 })
 
 export const mapDispatchToProps = (dispatch) => ({
-    setLoading: val => dispatch(setIsLoading(val))
+    setLoading: val => dispatch(setGlobalLoading(val))
 })
