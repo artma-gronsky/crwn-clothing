@@ -23,5 +23,5 @@ export const selectShopSelectedCollectionTitle = createSelector([selectShopColle
         : ""
 );
 
-export const selectLoading = createSelector([selectShop], state => state.isLoading);
+export const selectIsFetching = createSelector([selectShop], state => state.isFetching);
 
