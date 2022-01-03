@@ -3,9 +3,8 @@ import React from 'react';
 import './sign-in.styles.scss';
 import {FormInput} from "../form-input/form-input.component";
 import {CustomButton} from "../custom-button/custom-button.component";
-import {auth, singInWithGoogle} from "../../firebase/firebase.utils";
 import {connect} from "react-redux";
-import {mapDispatchToProps} from "../../redux/common/common.maps";
+import {emailSignInStart, googleSignInStart} from "../../redux/user/user.actions";
 
 
 class SignIn extends React.Component {
@@ -20,18 +19,9 @@ class SignIn extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
+        const {emailSignInStart} = this.props;
         const {email, password} = this.state;
-
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-
-            this.setState((prevState, props) => {
-                return {...prevState, email: '', password: ''}
-            })
-
-        } catch (err) {
-            console.log(err.message)
-        }
+        emailSignInStart({email, password});
     }
 
     handleChange = event => {
@@ -53,9 +43,7 @@ class SignIn extends React.Component {
                     <CustomButton type='submit'>Sign In</CustomButton>
                     <CustomButton isGoogleSignIn onClick={(event) => {
                         event.preventDefault();
-                        this.props.setLoading(true);
-                        return singInWithGoogle(event)
-                            .catch(() => this.props.setLoading(false))
+                        this.props.googleSignInStart();
                     }}>{' '}
                         Sign In With Google
                         {' '}</CustomButton>
@@ -65,4 +53,8 @@ class SignIn extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(null, dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: ({email, password}) => dispatch(emailSignInStart({email, password}))
+}))
+(SignIn);
