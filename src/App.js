@@ -11,8 +11,13 @@ import PreLoader from "./components/pre-loader/pre-loader.component";
 import CheckoutPage from "./pages/checkoutpage/checkoutpage.component";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "./redux/user/user.selectors";
+import {checkUserSession} from "./redux/user/user.actions";
 
 class App extends React.Component {
+    componentDidMount() {
+        this.props.checkUserSession();
+    }
+
     render() {
         return (
             <div>
@@ -34,4 +39,6 @@ class App extends React.Component {
 
 export default connect(createStructuredSelector({
     currentUser: selectCurrentUser
+}), dispatch => ({
+    checkUserSession: () => dispatch(checkUserSession())
 }))(App);

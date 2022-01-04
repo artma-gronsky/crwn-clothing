@@ -1,11 +1,18 @@
 import {all, call, put, takeLatest} from "redux-saga/effects";
 import {UserActionTypes} from "./user.types";
 import {setGlobalLoading} from "../common/common.actions";
-import {auth, createUserProfileDocument, googleProvider} from "../../firebase/firebase.utils";
-import {signInFailure, signInSuccess, signOutFailure, signOutSuccess, signUpFailure} from "./user.actions";
+import {auth, createUserProfileDocument, getCurrentUser, googleProvider} from "../../firebase/firebase.utils";
+import {
+    setCurrentUser,
+    signInFailure,
+    signInSuccess,
+    signOutFailure,
+    signOutSuccess,
+    signUpFailure
+} from "./user.actions";
 
 
-function* putUserToStore(user, additionalData = null) {
+function* mapUserAuthAndPutUserToStore(user, additionalData = null) {
     const userRef = yield call(createUserProfileDocument, user, additionalData);
     const snapShot = yield userRef.get();
     yield put(signInSuccess(snapShot.data()))
@@ -18,7 +25,7 @@ function* onEmailAndPasswordSignInStartWorker({payload: {email, password}}) {
 
     try {
         const {user} = yield auth.signInWithEmailAndPassword(email, password);
-        yield call(putUserToStore, user);
+        yield call(mapUserAuthAndPutUserToStore, user);
 
     } catch (err) {
         yield put(setGlobalLoading(false));
@@ -32,7 +39,7 @@ function* onSingInStartWorker() {
 
     try {
         const {user} = yield auth.signInWithPopup(googleProvider);
-        yield call(putUserToStore, user);
+        yield call(mapUserAuthAndPutUserToStore, user);
 
     } catch (err) {
         yield put(setGlobalLoading(false));
@@ -53,11 +60,30 @@ function* onSignUpStartWorker({payload: {email, password, ...additionalData}}) {
     try {
         yield put(setGlobalLoading(true));
         const {user} = yield auth.createUserWithEmailAndPassword(email, password);
-        yield call(putUserToStore, user, additionalData);
+        yield call(mapUserAuthAndPutUserToStore, user, additionalData);
     } catch (err) {
         yield put(signUpFailure(err))
         yield put(setGlobalLoading(false));
     }
+}
+
+function* isUserAuthenticatedWorker() {
+    yield put(setGlobalLoading(true));
+    try {
+        const userAuth = yield getCurrentUser();
+        if (!userAuth) {
+            yield put(setCurrentUser(null));
+            yield put(setGlobalLoading(false));
+
+        } else {
+            yield call(mapUserAuthAndPutUserToStore, userAuth);
+        }
+
+    } catch (err) {
+        yield put(signUpFailure(err));
+        yield put(setGlobalLoading(false));
+    }
+
 }
 
 function* onGoogleSignInStartWatcher() {
@@ -76,12 +102,17 @@ function* onSignUpStartWatcher() {
     yield takeLatest(UserActionTypes.SIGN_UP_START, onSignUpStartWorker)
 }
 
+function* checkUserSessionWatch() {
+    yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticatedWorker)
+}
+
 
 export function* userWatchers() {
     yield all([
         call(onGoogleSignInStartWatcher),
         call(onSignOutStartWatcher),
         call(onEmailAndPasswordSignInStartWatcher),
-        call(onSignUpStartWatcher)
+        call(onSignUpStartWatcher),
+        call(checkUserSessionWatch)
     ])
 }

@@ -26,6 +26,8 @@ export default function userReducer(state = INITIAL_STATE, action) {
             return {...state, isFetching: false, currentUser: null}
         case UserActionTypes.SIGN_OUT_FAILURE:
             return {...state, isFetching: false, currentUser: null, error: action.payload}
+        case UserActionTypes.CHECK_USER_SESSION:
+            return {...state, isFetching: true, currentUser: null}
         default:
             return state;
     }
