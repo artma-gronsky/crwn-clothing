@@ -8,7 +8,8 @@ import {
     signInSuccess,
     signOutFailure,
     signOutSuccess,
-    signUpFailure
+    signUpFailure,
+    signUpSuccess
 } from "./user.actions";
 
 
@@ -18,7 +19,6 @@ function* mapUserAuthAndPutUserToStore(user, additionalData = null) {
     yield put(signInSuccess(snapShot.data()))
     yield put(setGlobalLoading(false));
 }
-
 
 function* onEmailAndPasswordSignInStartWorker({payload: {email, password}}) {
     yield put(setGlobalLoading(true));
@@ -60,7 +60,8 @@ function* onSignUpStartWorker({payload: {email, password, ...additionalData}}) {
     try {
         yield put(setGlobalLoading(true));
         const {user} = yield auth.createUserWithEmailAndPassword(email, password);
-        yield call(mapUserAuthAndPutUserToStore, user, additionalData);
+
+        yield put(signUpSuccess({user, ...additionalData}))
     } catch (err) {
         yield put(signUpFailure(err))
         yield put(setGlobalLoading(false));
@@ -90,6 +91,10 @@ function* onGoogleSignInStartWatcher() {
     yield takeLatest(UserActionTypes.GOOGLE_SING_IN_START, onSingInStartWorker)
 }
 
+function* signInOnSignUpSuccessWorker({payload: {user, ...additionalData}}) {
+    yield call(mapUserAuthAndPutUserToStore, user, additionalData);
+}
+
 function* onEmailAndPasswordSignInStartWatcher() {
     yield takeLatest(UserActionTypes.EMAIL_SING_IN_START, onEmailAndPasswordSignInStartWorker)
 }
@@ -106,6 +111,10 @@ function* checkUserSessionWatch() {
     yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticatedWorker)
 }
 
+function* signInOnSignUpSuccessWatcher() {
+    yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInOnSignUpSuccessWorker)
+}
+
 
 export function* userWatchers() {
     yield all([
@@ -113,6 +122,7 @@ export function* userWatchers() {
         call(onSignOutStartWatcher),
         call(onEmailAndPasswordSignInStartWatcher),
         call(onSignUpStartWatcher),
-        call(checkUserSessionWatch)
+        call(checkUserSessionWatch),
+        call(signInOnSignUpSuccessWatcher)
     ])
 }

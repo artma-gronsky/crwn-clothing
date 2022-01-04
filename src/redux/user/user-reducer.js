@@ -11,7 +11,6 @@ export default function userReducer(state = INITIAL_STATE, action) {
         case UserActionTypes.SET_CURRENT_USER:
             return {...state, currentUser: action.payload}
         case UserActionTypes.SING_IN_SUCCESS:
-        case UserActionTypes.SIGN_UP_SUCCESS:
             return {...state, currentUser: action.payload, isFetching: false, error: null}
         case UserActionTypes.GOOGLE_SING_IN_START:
         case UserActionTypes.EMAIL_SING_IN_START:
