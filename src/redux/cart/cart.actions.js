@@ -29,3 +29,7 @@ export const decreaseItemQuantity = (id) => ({
     type: CartActionTypes.DECREASE_ITEM_QUANTITY,
     payload: id
 })
+
+export const clearCart = () => ({
+    type: CartActionTypes.CLEAR_CART
+})

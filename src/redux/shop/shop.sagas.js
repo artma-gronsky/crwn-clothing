@@ -1,10 +1,10 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {ShopActionTypes} from "./shop.types";
 import {firestore} from "../../firebase/firebase.utils";
 import {fetchDataError, fetchDataSuccess} from "./shop.actions";
 
 
-export function* fetchCollectionWorker() {
+function* fetchCollectionWorker() {
     try {
         const collectionRef = firestore.collection('collections');
         const snapshot = yield collectionRef.get();
@@ -32,6 +32,12 @@ export function* fetchCollectionWorker() {
     }
 }
 
-export function* fetchCollectionsWatcher() {
+function* fetchCollectionsWatcher() {
     yield takeLatest(ShopActionTypes.FETCH_DATA_START, fetchCollectionWorker)
+}
+
+export default function* shopSagas() {
+    yield all([
+        call(fetchCollectionsWatcher)
+    ])
 }

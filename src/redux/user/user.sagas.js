@@ -72,7 +72,7 @@ function* isUserAuthenticatedWorker() {
     try {
         const userAuth = yield getCurrentUser();
         if (!userAuth) {
-            yield put(setCurrentUser(null));
+            yield put(setCurrentUser());
             yield put(setGlobalLoading(false));
 
         } else {
