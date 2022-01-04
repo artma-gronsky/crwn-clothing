@@ -25,7 +25,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
                 displayName: userAuth.displayName,
                 email: userAuth.email,
                 createdAt: new Date(),
-                userAboutHimself: 'I love Shafak!'
+                userAboutHimself: 'I love Shafak!',
+                ...additionalData
             });
         } catch (error) {
             console.log('Error creating user', error.message)
@@ -51,16 +52,25 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd, for
 
 };
 
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe();
+            resolve(userAuth);
+        }, reject);
+    });
+}
+
 
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({prompt: 'select_account'});
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt: 'select_account'});
 
-export const singInWithGoogle = () => auth.signInWithPopup(provider);
+export const singInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 
 export default firebase;

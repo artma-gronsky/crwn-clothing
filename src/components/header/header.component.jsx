@@ -1,25 +1,14 @@
 import React from 'react';
 import {ReactComponent as Logo} from "../../assets/images/084 crown.svg";
-import {auth} from "../../firebase/firebase.utils";
 import {connect} from "react-redux";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
-import {mapDispatchToProps} from "../../redux/common/common.maps";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "../../redux/user/user.selectors";
 import {HeaderContainer, LogoContainer, OptionDiv, OptionLink, OptionsContainer} from "./header.styles";
+import {signOutStart} from "../../redux/user/user.actions";
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.props.setLoading(true);
-    }
-
-    componentDidMount() {
-        this.props.setLoading(false);
-    }
-
     render() {
         return (
             <HeaderContainer>
@@ -32,7 +21,7 @@ class Header extends React.Component {
 
                     {!this.props.currentUser ?
                         (<OptionLink to='/sign'>SIGN UP</OptionLink>) :
-                        (<OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>)
+                        (<OptionDiv onClick={() => this.props.dispatch(signOutStart())}>SIGN OUT</OptionDiv>)
                     }
                     <CartIcon/>
                 </OptionsContainer>
@@ -44,4 +33,4 @@ class Header extends React.Component {
 
 export default connect(createStructuredSelector({
     currentUser: selectCurrentUser
-}), mapDispatchToProps)(Header);
+}))(Header);
