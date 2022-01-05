@@ -1,5 +1,5 @@
 import './App.css';
-import React from "react";
+import React, {useEffect} from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
 
 import {HomePage} from "./pages/homepage/homepage.component";
@@ -13,28 +13,26 @@ import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "./redux/user/user.selectors";
 import {checkUserSession} from "./redux/user/user.actions";
 
-class App extends React.Component {
-    componentDidMount() {
-        this.props.checkUserSession();
-    }
+const App = ({checkUserSession, currentUser}) => {
+    useEffect(() => {
+        checkUserSession();
+    }, [checkUserSession]);
 
-    render() {
-        return (
-            <div>
-                <PreLoader/>
-                <Header/>
-                <Routes>
-                    <Route exact={true} path='/' element={(<HomePage/>)}/>
-                    <Route exact path='/shop/*' element={(<ShopPage/>)}/>
-                    <Route path='/sign'
-                           element={this.props.currentUser ? (<Navigate to="/"/>) : (<SignInAndSignUpPage/>)}/>
-                    <Route path='/checkout' element={<CheckoutPage/>}/>
+    return (
+        <div>
+            <PreLoader/>
+            <Header/>
+            <Routes>
+                <Route exact={true} path='/' element={(<HomePage/>)}/>
+                <Route exact path='/shop/*' element={(<ShopPage/>)}/>
+                <Route path='/sign'
+                       element={currentUser ? (<Navigate to="/"/>) : (<SignInAndSignUpPage/>)}/>
+                <Route path='/checkout' element={<CheckoutPage/>}/>
 
-                    <Route path='*' element={(<h1>404 Wrong page address! </h1>)}/>
-                </Routes>
-            </div>
-        );
-    }
+                <Route path='*' element={(<h1>404 Wrong page address! </h1>)}/>
+            </Routes>
+        </div>
+    );
 }
 
 export default connect(createStructuredSelector({

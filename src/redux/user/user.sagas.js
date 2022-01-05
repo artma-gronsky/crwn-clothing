@@ -13,6 +13,9 @@ import {
 } from "./user.actions";
 
 
+/*
+ WORKERS SECTION
+ */
 function* mapUserAuthAndPutUserToStore(user, additionalData = null) {
     const userRef = yield call(createUserProfileDocument, user, additionalData);
     const snapShot = yield userRef.get();
@@ -95,6 +98,13 @@ function* signInOnSignUpSuccessWorker({payload: {user, ...additionalData}}) {
     yield call(mapUserAuthAndPutUserToStore, user, additionalData);
 }
 
+/*
+ WORKERS SECTION END
+ */
+
+/*
+ WATCHERS SECTION
+ */
 function* onEmailAndPasswordSignInStartWatcher() {
     yield takeLatest(UserActionTypes.EMAIL_SING_IN_START, onEmailAndPasswordSignInStartWorker)
 }
@@ -115,6 +125,9 @@ function* signInOnSignUpSuccessWatcher() {
     yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInOnSignUpSuccessWorker)
 }
 
+/*
+ WATCHERS SECTION END
+ */
 
 export function* userWatchers() {
     yield all([
