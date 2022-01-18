@@ -1,15 +1,19 @@
 import React from "react";
 import './collectionpage.styles.scss';
 import {useParams} from "react-router-dom";
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
-import {selectShopSelectedCollectionItems, selectShopSelectedCollectionTitle} from "../../redux/shop/shop.selectors";
 import CollectionItem from "../../components/collection-item/collection-item.component";
 import {selectShopCategory} from "../../redux/shop/shop.actions";
+import {useDispatch, useSelector} from "react-redux";
+import {selectShopSelectedCollectionItems, selectShopSelectedCollectionTitle} from "../../redux/shop/shop.selectors";
 
-const CollectionPage = ({collectionItems, title, dispatch}) => {
+const CollectionPage = () => {
     const {name} = useParams();
+
+    const dispatch = useDispatch();
     dispatch(selectShopCategory(name.toLowerCase()));
+    
+    const collectionItems = useSelector(selectShopSelectedCollectionItems);
+    const title = useSelector(selectShopSelectedCollectionTitle);
 
 
     if (collectionItems && collectionItems.length) {
@@ -29,9 +33,6 @@ const CollectionPage = ({collectionItems, title, dispatch}) => {
     return null;
 }
 
-export default connect(createStructuredSelector({
-    collectionItems: selectShopSelectedCollectionItems,
-    title: selectShopSelectedCollectionTitle
-}))(CollectionPage);
+export default CollectionPage;
 
 

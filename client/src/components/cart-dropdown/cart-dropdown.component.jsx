@@ -1,13 +1,15 @@
 import React from "react";
 import './cart-dropdown.styles.scss';
 import {CustomButton} from "../custom-button/custom-button.component";
-import {mapStateToProps} from "../../redux/cart/cart.maps";
 
-import {connect} from "react-redux";
+import {useSelector} from "react-redux";
 import {CartItem} from "./cart-item/cart-item.component";
 import {useNavigate} from "react-router-dom";
+import {selectCartItems, selectIsCartHidden} from "../../redux/cart/cart.selectors";
 
-const CartDropdown = ({cartItems, isHidden}) => {
+const CartDropdown = () => {
+    const isHidden = useSelector(selectIsCartHidden);
+    const cartItems = useSelector(selectCartItems)
     const navigate = useNavigate();
 
     return isHidden ? null : (
@@ -22,5 +24,4 @@ const CartDropdown = ({cartItems, isHidden}) => {
         </div>);
 }
 
-
-export default connect(mapStateToProps)(CartDropdown);
+export default CartDropdown;

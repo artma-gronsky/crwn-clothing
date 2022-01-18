@@ -6,17 +6,19 @@ import {HomePage} from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shoppage/shoppage.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up-page/sign-in-and-sign-up-page.component";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PreLoader from "./components/pre-loader/pre-loader.component";
 import CheckoutPage from "./pages/checkoutpage/checkoutpage.component";
-import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "./redux/user/user.selectors";
 import {checkUserSession} from "./redux/user/user.actions";
 
-const App = ({checkUserSession, currentUser}) => {
+const App = () => {
+    const currentUser = useSelector(selectCurrentUser);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        checkUserSession();
-    }, [checkUserSession]);
+        dispatch(checkUserSession())
+    }, [dispatch]);
 
     return (
         <div>
@@ -35,8 +37,4 @@ const App = ({checkUserSession, currentUser}) => {
     );
 }
 
-export default connect(createStructuredSelector({
-    currentUser: selectCurrentUser
-}), dispatch => ({
-    checkUserSession: () => dispatch(checkUserSession())
-}))(App);
+export default App;
